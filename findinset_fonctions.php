@@ -19,14 +19,41 @@ if (!defined('_ECRIRE_INC_VERSION')) return;
  *
  * @access public
  */
-function critere_find_in_set($idb, &$boucles, $crit, $left=false) {
+function critere_find_in_set_dist($idb, &$boucles, $crit) {
     // Je sais pas à quoi ça sert, mais Morin fait comme ça dans bonux
     $boucle = &$boucles[$idb];
 
-    // Les paramètre du find_in_set
-    $recherche = $crit->param[0][0]->texte;
+    // Récupérer le champ qui contient la liste d'élément
     $champ = $crit->param[1][0]->texte;
 
-    // Ajouter le critère FIND_IN_SET au where de la boucle
-    $boucle->where[] = array("'FIND_IN_SET(\'$recherche\', $champ)'");
+    // Les paramètre du find_in_set
+    if ($crit->param[0][0]->type == 'champ') {
+
+        // récupération de la balise du critère
+        $arg = calculer_liste(array($crit->param[0][0]), array(), $boucles, $boucle->id_parent);
+
+        // On créer le where
+        $boucle->where[] = array("construire_find_in_set($arg, '$champ')");
+    }
+    // Dans le cas ou on entre manuellement la recherche dans la boucle
+    elseif ($crit->param[0][0]->type == 'texte') {
+
+        // On récupère la recherche
+        $recherche = $crit->param[0][0]->texte;
+
+        // On créer le wherer
+        $boucle->where[] = array("construire_find_in_set($recherche, '$champ')");
+    }
+}
+
+
+// Cette fonction va servir à contruire proprement le find_in_set
+// Mais surtout à ne pas en créer si ce que l'on recherche est vide !
+function construire_find_in_set($find, $champ) {
+
+    // C'est vide on inihibe le where
+    if (empty($find))
+        return '1';
+    else
+        return "FIND_IN_SET('$find', $champ)";
 }
