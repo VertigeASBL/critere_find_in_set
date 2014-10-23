@@ -1,0 +1,22 @@
+<paquet
+	prefix="findinset"
+	categorie="outil"
+	version="1.0.0"
+	etat="dev"
+	compatibilite="[3.0.17;3.0.*]"
+	logo="prive/themes/spip/images/findinset-64.png"
+	documentation=""
+>
+	<!--
+		Paquet genere le 2014-10-23 12:13:58
+	-->
+
+	<nom>Critère find_in_set</nom>
+
+	<auteur lien='http://www.vertige.org'>Vertige (Didier)</auteur>
+
+	<licence>GNU/GPL</licence>
+
+
+
+</paquet>
