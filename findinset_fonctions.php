@@ -56,14 +56,11 @@ function construire_find_in_set($find, $champ) {
     else {
         // Si find est un tableau, on va chainer les FIND_IN_SET
         if (is_array($find)) {
-            $first_find = $find[0];
-            $sql = "FIND_IN_SET('$first_find', $champ)";
-            unset($find[0]);
-
+            $sql = array();
             foreach($find as $_find) {
-                $sql .= "AND FIND_IN_SET('$_find', $champ)";
+                $sql[] = "FIND_IN_SET('$_find', $champ)";
             }
-
+            $sql = implode(' AND ', $sql);
             return $sql;
         }
         else
