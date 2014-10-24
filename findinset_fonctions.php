@@ -11,7 +11,6 @@
 
 if (!defined('_ECRIRE_INC_VERSION')) return;
 
-
 /**
  * Critère SPIP find_in_set
  * Utilisation
@@ -54,6 +53,20 @@ function construire_find_in_set($find, $champ) {
     // C'est vide on inihibe le where
     if (empty($find))
         return '1';
-    else
-        return "FIND_IN_SET('$find', $champ)";
+    else {
+        // Si find est un tableau, on va chainer les FIND_IN_SET
+        if (is_array($find)) {
+            $first_find = $find[0];
+            $sql = "FIND_IN_SET('$first_find', $champ)";
+            unset($find[0]);
+
+            foreach($find as $_find) {
+                $sql .= "AND FIND_IN_SET('$_find', $champ)";
+            }
+
+            return $sql;
+        }
+        else
+            return "FIND_IN_SET('$find', $champ)";
+    }
 }
