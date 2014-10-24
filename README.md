@@ -8,3 +8,5 @@ Permet de filtrer une boucle SPIP via une valeur d'un champ SQL à séparateur v
 Utilisation:
 
 <code>{find_in_set recherche, champ_sql}</code>
+
+<code>{find_in_set #ARRAY{0,recherche1,1,recherche2}, champ_sql}</code>
