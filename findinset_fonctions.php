@@ -45,6 +45,31 @@ function critere_find_in_set_dist($idb, &$boucles, $crit) {
     }
 }
 
+/**
+ * Critère SPIP FIS
+ * Utilisation
+ * {champ_sql FIS recherche}
+ *
+ * Les critères infixes personnalisés ne sont pas (encore?) supportés
+ * par SPIP, alors il faut surcharger le fichier du core
+ * public/phraser_html.php comme le fait ce plugin…
+ *
+ * @access public
+ */
+function critere_FIS_dist($idb, &$boucles, $crit) {
+
+    /* On récupère la boucle du critère */
+    $boucle = &$boucles[$idb];
+
+    /* Puis les bouts de code php qui permettrons de calculer les
+       paramètres du critère. */
+    $champ     = calculer_liste($crit->param[0], array(), $boucles, $idb);
+    $recherche = calculer_liste($crit->param[1], array(), $boucles, $idb);
+
+    /* Enfin on ajoute de quoi calculer notre critère au where de la
+       boucle */
+    $boucle->where[] = array("construire_find_in_set($recherche, $champ)");
+}
 
 // Cette fonction va servir à contruire proprement le find_in_set
 // Mais surtout à ne pas en créer si ce que l'on recherche est vide !
