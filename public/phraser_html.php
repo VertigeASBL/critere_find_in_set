@@ -474,7 +474,12 @@ function phraser_criteres($params, &$result) {
   foreach($params as $v) {
     $var = $v[1][0];
     $param = ($var->type != 'texte') ? "" : $var->texte;
-    if ((count($v) > 2) && (!preg_match(",[^A-Za-z]IN[^A-Za-z],i",$param)))
+
+    if ($GLOBALS['criteres_infixes']) {
+        $crit_infixes = '|' . implode($GLOBALS['criteres_infixes']);
+    }
+
+    if ((count($v) > 2) && (!preg_match(",[^A-Za-z]IN".$crit_infixes."[^A-Za-z],i",$param)))
       {
 // plus d'un argument et pas le critere IN:
 // detecter comme on peut si c'est le critere implicite LIMIT debut, fin
@@ -568,7 +573,7 @@ function phraser_criteres($params, &$result) {
         if (preg_match(',^ *([0-9-]+) *(/) *(.+) *$,', $param, $m)) {
           $crit = phraser_critere_infixe($m[1], $m[3],$v, '/', '', '');
         } elseif (preg_match(',^([!]?)(' . CHAMP_SQL_PLUS_FONC .
-           ')[[:space:]]*(\??)(!?)(<=?|>=?|==?|\b(?:IN|LIKE)\b)(.*)$,is', $param, $m)) {
+           ')[[:space:]]*(\??)(!?)(<=?|>=?|==?|\b(?:IN|LIKE'.$crit_infixes.')\b)(.*)$,is', $param, $m)) {
           $a2 = trim($m[8]);
           if ($a2 AND ($a2[0]=="'" OR $a2[0]=='"') AND ($a2[0]==substr($a2,-1)))
             $a2 = substr($a2,1,-1);
