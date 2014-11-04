@@ -52,18 +52,21 @@ function construire_find_in_set($find, $champ) {
 
     // C'est vide on inihibe le where
     if (empty($find))
-        return '1';
+        return '1=1';
     else {
         // Si find est un tableau, on va chainer les FIND_IN_SET
         if (is_array($find)) {
             $sql = array();
             foreach($find as $_find) {
-                $sql[] = "FIND_IN_SET('$_find', $champ)";
+                $_find = sql_quote($_find);
+                $sql[] = "FIND_IN_SET($_find, $champ)";
             }
             $sql = implode(' AND ', $sql);
             return $sql;
         }
-        else
-            return "FIND_IN_SET('$find', $champ)";
+        else {
+            $find = sql_quote($find);
+            return "FIND_IN_SET($find, $champ)";
+        }
     }
 }
