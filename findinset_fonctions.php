@@ -19,7 +19,7 @@ if (!defined('_ECRIRE_INC_VERSION')) return;
  * @access public
  */
 function critere_find_in_set_dist($idb, &$boucles, $crit) {
-    // Je sais pas à quoi ça sert, mais Morin fait comme ça dans bonux
+    // Je sais pas à quoi ça sert, mais Cédric Morin fait comme ça dans bonux
     $boucle = &$boucles[$idb];
 
     // Récupérer le champ qui contient la liste d'élément
