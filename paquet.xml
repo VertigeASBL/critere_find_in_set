@@ -1,7 +1,7 @@
 <paquet
 	prefix="findinset"
 	categorie="outil"
-	version="1.0.0"
+	version="1.0.1"
 	etat="dev"
 	compatibilite="[3.0.17;3.0.*]"
 	logo="prive/themes/spip/images/findinset-64.png"

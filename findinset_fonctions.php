@@ -56,7 +56,9 @@ function construire_find_in_set($find, $champ) {
         if (is_array($find)) {
 
             // On va nettoyer le tableau des éventuels élements vides
-	        $find = array_filter($find);
+	        $find = array_filter($find, function ($el) {
+		        return ($el !== '');
+	        });
 
             $sql = array();
             foreach ($find as $_find) {
