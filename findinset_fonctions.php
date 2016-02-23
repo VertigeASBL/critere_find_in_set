@@ -9,8 +9,6 @@
  * @package    SPIP\Findinset\Fonctions
  */
 
-if (!defined('_ECRIRE_INC_VERSION')) return;
-
 /**
  * Critère SPIP find_in_set
  * Utilisation
@@ -33,9 +31,9 @@ function critere_find_in_set_dist($idb, &$boucles, $crit) {
 
         // On créer le where
         $boucle->where[] = array("construire_find_in_set($arg, '$champ')");
-    }
+
     // Dans le cas ou on entre manuellement la recherche dans la boucle
-    elseif ($crit->param[0][0]->type == 'texte') {
+    } elseif ($crit->param[0][0]->type == 'texte') {
 
         // On récupère la recherche
         $recherche = $crit->param[0][0]->texte;
@@ -51,24 +49,23 @@ function critere_find_in_set_dist($idb, &$boucles, $crit) {
 function construire_find_in_set($find, $champ) {
 
     // C'est vide on inihibe le where
-    if (empty($find))
+	if (empty($find)) {
         return '1=1';
-    else {
+	} else {
         // Si find est un tableau, on va chainer les FIND_IN_SET
         if (is_array($find)) {
 
             // On va nettoyer le tableau des éventuels élements vides
-            $find = array_filter($find);
+	        $find = array_filter($find);
 
             $sql = array();
-            foreach($find as $_find) {
+            foreach ($find as $_find) {
                 $_find = sql_quote($_find);
                 $sql[] = "FIND_IN_SET($_find, $champ)";
             }
             $sql = implode(' AND ', $sql);
             return $sql;
-        }
-        else {
+        } else {
             $find = sql_quote($find);
             return "FIND_IN_SET($find, $champ)";
         }
